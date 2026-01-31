@@ -1,17 +1,19 @@
 import { useStore } from '@/stores/DBStore';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { PointerIcon, ThumbsDownIcon, ThumbsUpIcon } from 'lucide-react';
 
-const Detected = () => {
+const Result = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const { addFaces } = useStore();
   const [time, setTime] = useState(2);
+  const { state } = useLocation();
+  const { addVotes } = useStore();
 
   useEffect(() => {
+    console.log('useEffect in Result');
     try {
-      addFaces(state);
+      if (state) {
+        addVotes(state);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -20,7 +22,7 @@ const Detected = () => {
       setTime((prevTime) => {
         if (prevTime <= 1) {
           clearInterval(interval);
-          navigate('/gesture/' + state.label);
+          navigate('/face');
         }
         return prevTime - 1;
       });
@@ -31,17 +33,12 @@ const Detected = () => {
 
   return (
     <div className="p-10 text-center text-xl leading-10">
-      <h2 className="text-3xl text-center">{state.label}, prepare to vote</h2>
-      <p>
-        <ThumbsUpIcon className="inline" /> or{' '}
-        <ThumbsDownIcon className="inline" /> to vote,
-      </p>
-      <p>
-        <PointerIcon className="inline" /> to save
-      </p>
-      <p className="text-sm">In {time}s</p>
+      <h2 className="text-3xl text-center">
+        {state?.vote} by {state?.faceName} saved
+      </h2>
+      <p className="text-sm">Returning to detection in {time}s</p>
     </div>
   );
 };
 
-export default Detected;
+export default Result;
