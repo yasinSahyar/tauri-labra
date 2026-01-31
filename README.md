@@ -21,7 +21,7 @@ FaceVote is a desktop application built with **Tauri + Vite + React** that uses
 ## ▶️ How to Run
 
 ### 1️⃣ Install dependencies
-```bash
+
 npm install
 
 2️⃣ Run in development mode
